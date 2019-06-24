@@ -11,18 +11,19 @@ export default class Server {
 
     public app: express.Application;
     public port: number;
-    public socket: socketIO.Server;
+    public io: socketIO.Server;
     private httpServer: http.Server;
 
     public constructor() {
 
         this.app = express();
         this.port = SERVER_PORT;
-        // Configuramos el socket.
+        // Configure the io
         this.httpServer = new http.Server(this.app);
-        this.socket = socketIO(this.httpServer);
+        // io listens/emits on port SERVER_PORT.
+        this.io = socketIO(this.httpServer);
 
-        this.listenOnSocket();
+        this.listen();
     }
 
     public start(callback: Function) {
@@ -37,9 +38,13 @@ export default class Server {
         this.app.listen( this.port, callback() );
     }
 
-    private listenOnSocket() {
+    /**
+     * Listen for connections. Whenever a user connects on port SERVER_PORT via
+     * a websocket, log that a user has connected
+     */
+    private listen() {
         console.log('Escuchando en el socket...');
-        this.socket.on('connection', client => {
+        this.io.on('connection', client => {
             console.log('Cliente conectado.')
         });
     }
