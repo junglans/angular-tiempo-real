@@ -13,5 +13,5 @@ tsc -w
 
 Escuchar cambios
 ```
-nodemo dist/
+nodemon dist/
 ```
