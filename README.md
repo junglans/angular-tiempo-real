@@ -11,7 +11,8 @@ Generar dist
 tsc -w
 ```
 
-Escuchar cambios
+Iniciar el servidor, utilizar cualquiera de estos dos comandos
 ```
 nodemon dist/
+node dist/
 ```
