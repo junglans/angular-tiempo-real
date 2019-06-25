@@ -6,15 +6,19 @@ import cors from 'cors';
 import express from 'express';
 import socketIO from 'socket.io';
 import http from 'http';
-
+/**
+ *  Servidor que implementa el patrón singleton.
+ */
 export default class Server {
+
+    private static _instance: Server;
 
     public app: express.Application;
     public port: number;
     public io: socketIO.Server;
     private httpServer: http.Server;
 
-    public constructor() {
+    private constructor() {
 
         this.app = express();
         this.port = SERVER_PORT;
@@ -27,6 +31,10 @@ export default class Server {
         this.listen();
     }
 
+    public static get instance(): Server {
+        return Server._instance || (Server._instance = new this());
+    }
+    
     public start(callback: Function) {
 
         // Body parser
