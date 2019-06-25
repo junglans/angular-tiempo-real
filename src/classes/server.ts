@@ -18,6 +18,7 @@ export default class Server {
 
         this.app = express();
         this.port = SERVER_PORT;
+        // El la libreria de express y el servidor de sockets se relacionan a través del httpServer.
         // Configure the io
         this.httpServer = new http.Server(this.app);
         // io listens/emits on port SERVER_PORT.
@@ -35,7 +36,7 @@ export default class Server {
         this.app.use(cors({origin: true, credentials: true}))
 
         this.app.use('/', router);
-        this.app.listen( this.port, callback() );
+        this.httpServer.listen( this.port, callback() );
     }
 
     /**
