@@ -54,11 +54,13 @@ export default class Server {
      */
     private listen() {
 
-        console.log('Escuchando en el socket...');
+        console.log('Server> Escuchando en el socket...');
         this.io.on('connection', (client: Socket) => {
 
-            console.log('Cliente conectado.');
-            // Detectar la desconexión de un socket cliente
+            console.log('Server> Cliente conectado.');
+            // Listen for client messages.
+            socket.listenForMessages('messages', client);
+            // Detects disconnections from clients.
             socket.detectClientDisconnection(client);
            
         });
