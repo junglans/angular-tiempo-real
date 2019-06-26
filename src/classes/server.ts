@@ -4,8 +4,9 @@ import bodyParser from 'body-parser';
 import  router  from '../routes/router';
 import cors from 'cors';
 import express from 'express';
-import socketIO from 'socket.io';
+import socketIO, { Socket } from 'socket.io';
 import http from 'http';
+import * as socket from '../sockets/sockets';
 /**
  *  Servidor que implementa el patrón singleton.
  */
@@ -52,9 +53,16 @@ export default class Server {
      * a websocket, log that a user has connected
      */
     private listen() {
+
         console.log('Escuchando en el socket...');
-        this.io.on('connection', client => {
-            console.log('Cliente conectado.')
+        this.io.on('connection', (client: Socket) => {
+
+            console.log('Cliente conectado.');
+            // Detectar la desconexión de un socket cliente
+            socket.detectClientDisconnection(client);
+           
         });
+
+
     }
 }
