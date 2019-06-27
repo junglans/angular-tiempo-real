@@ -59,7 +59,7 @@ export default class Server {
 
             console.log('Server> Cliente conectado.');
             // Listen for client messages.
-            socket.listenForMessages('messages', client);
+            socket.listenForMessages(client, this.io);
             // Detects disconnections from clients.
             socket.detectClientDisconnection(client);
            
