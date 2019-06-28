@@ -17,7 +17,7 @@ export const listenForMessages = ( client: Socket,  io: socketIO.Server) => {
         console.log('Socket.listenForMessages> Payload: ' + JSON.stringify(payload));
 
         // Take the message received a broadcast it to clients.
-        io.emit('messages', payload);
+        client.broadcast.emit('messages', payload);
 
     })
 
