@@ -11,13 +11,13 @@ export const detectClientDisconnection = (client: Socket) => {
 
 export const listenForMessages = ( client: Socket,  io: socketIO.Server) => {
 
-    client.on('messages', (payload: any) => {
+    client.on('messages', (message: {_senderId:string, _payload:any}) => {
 
         console.log(`Socket.listenForMessages> Message received on 'messages'`);
-        console.log('Socket.listenForMessages> Payload: ' + JSON.stringify(payload));
+        console.log('Socket.listenForMessages> Payload: ' + JSON.stringify(message));
 
         // Take the message received a broadcast it to clients.
-        client.broadcast.emit('messages', payload);
+        client.broadcast.emit('messages', message);
 
     });
 
