@@ -31,11 +31,17 @@ export default class Server {
 
         this.listen();
     }
-
+    /**
+     * Devuelve la instancia del singleton.
+     */
     public static get instance(): Server {
         return Server._instance || (Server._instance = new this());
     }
-    
+   
+    /**
+     * Este método inicia el servidor. Se invoca desde la clase 'index.ts'.
+     * @param callback 
+     */
     public start(callback: Function) {
 
         // Body parser

@@ -19,6 +19,16 @@ export const listenForMessages = ( client: Socket,  io: socketIO.Server) => {
         // Take the message received a broadcast it to clients.
         client.broadcast.emit('messages', payload);
 
-    })
+    });
+
+    client.on('configure-user', (payload: {username: string}, callback: Function) => {
+        console.log(payload.username);
+        // Llamamos a la función de callback para indicar que el evento se
+        // recibido correctamente,
+        callback({
+            ok: true,
+            msg: `Usuario "${payload.username}" configurado correctamente.`
+        });
+    });
 
 }
