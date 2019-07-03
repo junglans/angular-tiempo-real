@@ -1,4 +1,18 @@
 import socketIO, { Socket } from 'socket.io';
+import { UserList } from '../model/user_list';
+import { User } from '../model/user';
+
+export const userList: UserList = UserList.getInstance();
+/**
+ * 
+ * @param client This method creates a new user from a socket connection.
+ */
+export const detectClientConnection = ( client: Socket ) => {
+
+    userList.add(new User(client.id));
+    console.log( 'Socket.detectClientConnection>Connected Users :' + JSON.stringify(userList.getUserList())) ;
+
+}
 /**
  * This method detects a client disconnection event.
  * @param client 
@@ -6,6 +20,8 @@ import socketIO, { Socket } from 'socket.io';
 export const detectClientDisconnection = (client: Socket) => {
     client.on('disconnect', () => {
         console.log('Socket.detectClientDisconnection> Client disconnected.');
+        userList.deleteUser(client.id);
+        console.log( 'Socket.detectClientDisconnection> Connected Users :' + JSON.stringify(userList.getUserList())) ;
     });
 }
 
@@ -23,6 +39,11 @@ export const listenForMessages = ( client: Socket,  io: socketIO.Server) => {
 
     client.on('configure-user', (payload: {username: string}, callback: Function) => {
         console.log(payload.username);
+
+        const user: User | undefined = userList.getUser(client.id);
+        if (user) {
+            user.username = payload.username;
+        }
         // Llamamos a la función de callback para indicar que el evento se
         // recibido correctamente,
         callback({

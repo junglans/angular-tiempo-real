@@ -4,8 +4,8 @@
 export class User {
 
     private _id: string;
-    private _username: string = '';
-    private _room: string = '';
+    private _username: string = 'no-name';
+    private _room: string = 'no-room';
 
     constructor(id: string) {
         this._id = id;

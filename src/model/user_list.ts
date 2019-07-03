@@ -3,9 +3,14 @@ import { User } from "./user";
 
 export class UserList {
 
+    private static userList:UserList = new UserList();
     private list: Map<string, User> = new Map<string, User>();
 
-    constructor() {}
+    private constructor() {}
+
+    public static getInstance(): UserList {
+        return UserList.userList;
+    }
 
     /**
      * This method adds a user to the list.
@@ -14,9 +19,8 @@ export class UserList {
     public add(user: User): User {
 
         if (user) {
-            this.list.set(user.id, user);
+           this.list.set(user.id, user);
         }
-
         return user;
     }
     /**
@@ -67,11 +71,11 @@ export class UserList {
     }
 
     public deleteUser(id: string): void {
-        
+
         const user: User | undefined = this.getUser(id);
         if (user) {
              this.list.delete(id);
-             console.log (`User ${user.id} has been deleted.`);
+             console.log (`User ${user.id}, ${user.username} has been deleted.`);
         } else {
             console.log (`User with id: ${id} has not been found.`);
         }

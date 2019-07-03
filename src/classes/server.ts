@@ -64,6 +64,8 @@ export default class Server {
         this.io.on('connection', (client: Socket) => {
 
             console.log('Server> Cliente conectado.');
+            // detects client connections
+            socket.detectClientConnection(client);
             // Listen for client messages.
             socket.listenForMessages(client, this.io);
             // Detects disconnections from clients.
