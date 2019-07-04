@@ -27,23 +27,29 @@ export const detectClientDisconnection = (client: Socket) => {
 
 export const listenForMessages = ( client: Socket,  io: socketIO.Server) => {
 
-    client.on('messages', (message: {_senderId:string, _payload:any}) => {
+    client.on('public-messages', (message: {_senderId:string, _payload:any}) => {
 
         console.log(`Socket.listenForMessages> Message received on 'messages'`);
         console.log('Socket.listenForMessages> Payload: ' + JSON.stringify(message));
 
         // Take the message received a broadcast it to clients.
-        client.broadcast.emit('messages', message);
+        client.broadcast.emit('public-messages', message);
 
     });
 
+    
+
+}
+
+export const listenForUserConnections = (client: Socket) => {
     client.on('configure-user', (payload: {username: string}, callback: Function) => {
-        console.log(payload.username);
+         
 
         const user: User | undefined = userList.getUser(client.id);
         if (user) {
             user.username = payload.username;
         }
+        console.log( 'Socket.listenForUserConnections> Connected Users :' + JSON.stringify(userList.getUserList()));
         // Llamamos a la función de callback para indicar que el evento se
         // recibido correctamente,
         callback({
@@ -51,5 +57,4 @@ export const listenForMessages = ( client: Socket,  io: socketIO.Server) => {
             msg: `Usuario "${payload.username}" configurado correctamente.`
         });
     });
-
 }

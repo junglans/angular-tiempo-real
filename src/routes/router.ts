@@ -1,6 +1,7 @@
 // Definimos los recursos del api REST.
 
 import { Router, Request, Response } from 'express';
+import Server from '../classes/server';
 
 const router = Router();
 
@@ -10,6 +11,20 @@ router.get('/messages', (req: Request, res: Response) => {
             ok: true,
             msg: 'Todo está correcto: GET'
         });
+});
+
+router.post('/message/:id', (req: Request, res: Response) => {
+
+    const id = req.params.id;
+    // Nos conectamos al server socket. No olvidar que es un singleton.
+    const server: Server = Server.instance;
+
+    server.io.in(id).emit('private-messages', req.body);
+
+    res.json({
+        ok: true,
+        msg: 'Mensaje enviado'
+    });
 });
 
 router.get('/user/:id', (req: Request, res: Response) => {

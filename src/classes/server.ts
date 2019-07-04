@@ -70,6 +70,8 @@ export default class Server {
             socket.listenForMessages(client, this.io);
             // Detects disconnections from clients.
             socket.detectClientDisconnection(client);
+            // Detects user login.
+            socket.listenForUserConnections(client);
            
         });
 
