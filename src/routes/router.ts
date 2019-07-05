@@ -5,15 +5,19 @@ import Server from '../classes/server';
 
 const router = Router();
 
-router.get('/messages', (req: Request, res: Response) => {
+router.post('/messages', (req: Request, res: Response) => {
+
+        const server: Server = Server.instance;
+
+        server.io.emit('public-messages', req.body);
 
         res.json({
             ok: true,
-            msg: 'Todo está correcto: GET'
+            msg: 'Mensaje enviado.'
         });
 });
 
-router.post('/message/:id', (req: Request, res: Response) => {
+router.post('/messages/:id', (req: Request, res: Response) => {
 
     const id = req.params.id;
     // Nos conectamos al server socket. No olvidar que es un singleton.
