@@ -31,7 +31,7 @@ router.post('/messages/:id', (req: Request, res: Response) => {
     });
 });
 
-router.get('/user/:id', (req: Request, res: Response) => {
+router.get('/users/:id', (req: Request, res: Response) => {
 
     const id = req.params.id;
     res.json({
@@ -40,15 +40,27 @@ router.get('/user/:id', (req: Request, res: Response) => {
     });
 });
 
-router.post('/user', (req: Request, res: Response) => {
+router.post('/users', (req: Request, res: Response) => {
 
-    const name = req.body.name;
-    const surname = req.body.surname;
+    const server: Server = Server.instance;
 
-    res.json({
-        ok: true,
-        msg: name + ' ' + surname
+    server.io.clients(( err: any, clients: string[]) => {
+
+        if (err) {
+            res.json({
+                ok: false,
+                msg: err
+            });
+        }
+
+        res.json({
+
+            ok: true,
+            msg: clients
+
+        });
     });
+
 });
 
 export default router;
