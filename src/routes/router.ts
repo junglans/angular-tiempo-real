@@ -2,6 +2,8 @@
 
 import { Router, Request, Response } from 'express';
 import Server from '../classes/server';
+import { request } from 'https';
+import { userList } from '../sockets/sockets';
 
 const router = Router();
 
@@ -31,16 +33,9 @@ router.post('/messages/:id', (req: Request, res: Response) => {
     });
 });
 
-router.get('/users/:id', (req: Request, res: Response) => {
 
-    const id = req.params.id;
-    res.json({
-        ok: true,
-        msg: `Todo está correcto: Obtenido el id ${id}`
-    });
-});
 
-router.post('/users', (req: Request, res: Response) => {
+router.get('/users', (req: Request, res: Response) => {
 
     const server: Server = Server.instance;
 
@@ -49,18 +44,38 @@ router.post('/users', (req: Request, res: Response) => {
         if (err) {
             res.json({
                 ok: false,
-                msg: err
+                payload: err
             });
         }
 
         res.json({
 
             ok: true,
-            msg: clients
+            payload: clients
 
         });
     });
 
 });
 
+router.get('/users/detail', (req: Request, res: Response) => {
+
+    res.json({
+
+        ok: true,
+        payload: userList.getUserList()
+
+    });
+    
+
+});
+// Return a user by the socket client id.
+router.get('/users/:id', (req: Request, res: Response) => {
+
+    const id = req.params.id;
+    res.json({
+        ok: true,
+        msg: `Todo está correcto: Obtenido el id ${id}`
+    });
+});
 export default router;
