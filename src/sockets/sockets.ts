@@ -65,11 +65,12 @@ export const listenForUserConnections = (client: Socket, io: SocketIO.Server) =>
 }
 
 export const listenForUserConnectedRequest = (client: Socket, io: SocketIO.Server) => {
-    client.on('users-connected-request', ( payload: any, callback: Function ) => {
-        console.log( 'Socket.listenForUserConnectedRequest> Connected Users :' + JSON.stringify(userList.getUserList()));
+    client.on('active-users-request', ( payload: any, callback: Function ) => {
+        
+        io.in(client.id).emit('active-users-request', {from: 'server', payload: userList.getUserList().filter( item => item.username !== 'no-name') });
         callback({
             ok: true,
-            msg: userList.getUserList().filter( item => item.username !== 'no-name')
+            msg: 'Petición procesada'
         });
     });
 }
