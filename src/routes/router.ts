@@ -6,7 +6,9 @@ import { request } from 'https';
 import { userList } from '../sockets/sockets';
 
 const router = Router();
-
+/**
+ * Envía un mensaje a todos los usuarios conectados
+ */
 router.post('/messages', (req: Request, res: Response) => {
 
         const server: Server = Server.instance;
@@ -18,7 +20,9 @@ router.post('/messages', (req: Request, res: Response) => {
             msg: 'Mensaje enviado.'
         });
 });
-
+/**
+ * Envia un mensaje privado al usuario que cuyo identificador de conexión viene en el parámetro {id}.
+ */
 router.post('/messages/:id', (req: Request, res: Response) => {
 
     const id = req.params.id;
@@ -34,7 +38,9 @@ router.post('/messages/:id', (req: Request, res: Response) => {
 });
 
 
-
+/**
+ * Devuelve la lista de identificadores de usuarios que están conectados al servidor.
+ */
 router.get('/users', (req: Request, res: Response) => {
 
     const server: Server = Server.instance;
@@ -57,7 +63,9 @@ router.get('/users', (req: Request, res: Response) => {
     });
 
 });
-
+/**
+ * Devuelve la información completa de los usuarios que están conectados al servidor.
+ */
 router.get('/users/detail', (req: Request, res: Response) => {
 
     res.json({
@@ -69,7 +77,8 @@ router.get('/users/detail', (req: Request, res: Response) => {
     
 
 });
-// Return a user by the socket client id.
+
+// Returns a user by the socket client id.
 router.get('/users/:id', (req: Request, res: Response) => {
 
     const id = req.params.id;
@@ -78,4 +87,6 @@ router.get('/users/:id', (req: Request, res: Response) => {
         msg: `Todo está correcto: Obtenido el id ${id}`
     });
 });
+
+
 export default router;

@@ -65,13 +65,15 @@ export default class Server {
 
             console.log('Server> Cliente conectado.');
             // detects client connections
-            socket.detectClientConnection(client);
+            socket.detectClientConnection(client, this.io);
             // Listen for client messages.
             socket.listenForMessages(client, this.io);
             // Detects disconnections from clients.
-            socket.detectClientDisconnection(client);
+            socket.detectClientDisconnection(client, this.io);
             // Detects user login.
-            socket.listenForUserConnections(client);
+            socket.listenForUserConnections(client, this.io);
+            // Listen for the current user connection list request.
+            socket.listenForUserConnectedRequest(client, this.io);
            
         });
 
